@@ -1,34 +1,13 @@
 # desktop
 
-![Commit Validation](https://github.com/actually-colab/desktop/workflows/Commit%20Validation/badge.svg) ![PR Validation](https://github.com/actually-colab/desktop/workflows/PR%20Validation/badge.svg) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/actually-colab/desktop.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/actually-colab/desktop/context:javascript) [![Lines of Code](https://tokei.rs/b1/github/actually-colab/desktop)](https://github.com/actually-colab/desktop)
+![Commit Validation](https://github.com/actually-colab/desktop-launcher/workflows/Commit%20Validation/badge.svg) ![PR Validation](https://github.com/actually-colab/desktop-launcher/workflows/PR%20Validation/badge.svg) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/actually-colab/desktop-launcher.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/actually-colab/desktop-launcher/context:javascript) [![Lines of Code](https://tokei.rs/b1/github/actually-colab/desktop-launcher)](https://github.com/actually-colab/desktop-launcher)
 
 ### The Kernel Gateway
 
 This process is started by the kernel hidden renderer process and communicates with the main process via IPC.
 
 ```bash
-jupyter kernelgateway --KernelGatewayApp.allow_origin="*"
-```
-
-### The Editor Client
-
-In order to setup this repo, you also must clone the [editor repo](https://github.com/actually-colab/editor) and have the following directory structure:
-
-- root
-  - desktop
-  - editor
-
-## Setup Development
-
-1. Clone and setup the `desktop` and `editor` repo with the above directory structure
-2. Start the `editor/server`
-3. Install and build the `editor/client` via `yarn install && yarn build`
-4. Install the `desktop` dependencies via `yarn install`
-
-If the `editor/client` changes, you can install the latest version in the `desktop` repo by running:
-
-```bash
-yarn install:client
+jupyter kernelgateway --KernelGatewayApp.allow_origin="*" --KernelGatewayApp.allow_headers="content-type"
 ```
 
 This will automatically pull the latest client (assuming proper directory structure), install and build it, remove it from `desktop` and add it back. This complicated process seems to be required from an issue where `yarn install` doesn't pick up the latest build of the local package.
