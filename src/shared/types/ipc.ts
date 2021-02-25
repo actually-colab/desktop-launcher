@@ -48,17 +48,3 @@ export const IPC_MAIN_TO_KERNEL_CHANNEL = 'main-to-kernel';
  * The payload for the main-to-kernel channel
  */
 export type IpcMainToKernelPayload = IpcMainToKernelRequestClose;
-
-type IpcLoginSuccess = {
-  type: 'success';
-  url: string;
-};
-
-/**
- * The channel for sending auth redirect tokens
- */
-export const IPC_LOGIN_CHANNEL = 'main-to-client-login';
-/**
- * The payload for the login channel
- */
-export type IpcLoginPayload = IpcLoginSuccess;

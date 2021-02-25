@@ -1,4 +1,3 @@
-import * as _auth from './auth';
-import * as _editor from './editor';
+import * as _kernel from './kernel';
 
-export { _auth, _editor };
+export { _kernel };

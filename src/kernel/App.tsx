@@ -41,7 +41,11 @@ const EntryPoint: React.FC = () => {
 
     try {
       // Spawn the kernel gateway
-      kernelProcess.current = spawn('jupyter', ['kernelgateway', '--KernelGatewayApp.allow_origin="*"']);
+      kernelProcess.current = spawn('jupyter', [
+        'kernelgateway',
+        '--KernelGatewayApp.allow_origin="*"',
+        '--KernelGatewayApp.allow_headers="content-type"',
+      ]);
 
       let messageId = 0;
 

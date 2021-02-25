@@ -1,23 +1,20 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 
-import auth, { AuthState } from './auth';
-import editor, { EditorState } from './editor';
+import kernel, { KernelState } from './kernel';
 
 /**
  * The type of the combined reducer
  */
 export type ReduxState = {
-  auth: AuthState;
-  editor: EditorState;
+  kernel: KernelState;
 };
 
 /**
  * The combined redux store
  */
 export const reducers = combineReducers({
-  auth,
-  editor,
+  kernel,
 });
 
 /**

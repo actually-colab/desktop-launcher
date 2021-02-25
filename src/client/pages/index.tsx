@@ -1,4 +1,3 @@
-import AuthPage from './AuthPage';
-import EditorPage from './EditorPage';
+import KernelPage from './KernelPage';
 
-export { AuthPage, EditorPage };
+export { KernelPage };

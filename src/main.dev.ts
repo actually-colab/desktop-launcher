@@ -18,7 +18,7 @@ import treeKill from 'tree-kill';
 
 import MenuBuilder from './menu';
 import { IpcKernelProcessPayload, IPC_KERNEL_PROCESS_CHANNEL, StdoutMessage } from './shared/types/ipc';
-import { sendKernelProcessToClient, sendLoginToClient } from './main/utils/ipc';
+import { sendKernelProcessToClient } from './main/utils/ipc';
 
 export default class AppUpdater {
   constructor() {
@@ -92,10 +92,9 @@ const createWindow = async () => {
     show: false,
     minWidth: 960,
     minHeight: 840,
-    width: 1280,
-    height: 840,
+    width: 640,
+    height: 512,
     title: 'Actually Colab',
-    titleBarStyle: 'hiddenInset',
     icon: getAssetPath('icon.png'),
     webPreferences: {
       nodeIntegration: true,
@@ -105,7 +104,7 @@ const createWindow = async () => {
   kernelWindow = new BrowserWindow({
     show: false,
     width: 640,
-    height: 840,
+    height: 512,
     title: 'Kernel [hidden in prod]',
     webPreferences: {
       nodeIntegration: true,
@@ -223,8 +222,7 @@ app.setAsDefaultProtocolClient('actuallycolab');
 
 // MacOS specific. Use process.argv for Windows and Linux
 app.on('open-url', (_, url) => {
-  // Handle the login URI
-  sendLoginToClient(mainWindow, { type: 'success', url });
+  console.log('Opened via protocol', url);
 });
 
 // Handle UI dialogs
