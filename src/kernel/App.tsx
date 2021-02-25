@@ -1,11 +1,9 @@
 import React from 'react';
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 
+import { ALLOWED_ORIGIN } from '../shared/constants/client';
 import { getGatewayVersion, installGateway } from './system/jupyter';
 import { sendKernelProcessToMain } from './utils/ipc';
-
-const ALLOWED_ORIGIN =
-  process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://app.actuallycolab.org';
 
 /**
  * The kernel process renderer's entry point
