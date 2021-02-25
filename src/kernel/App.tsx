@@ -97,7 +97,7 @@ const EntryPoint: React.FC = () => {
   return (
     <div>
       <pre>gateway_version: {gatewayVersion}</pre>
-      <pre>state_pid: {pid}</pre>
+      <pre>kernel_pid: {pid}</pre>
       <pre>error: {kernelError}</pre>
     </div>
   );

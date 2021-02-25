@@ -90,10 +90,10 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    minWidth: 960,
-    minHeight: 840,
-    width: 640,
-    height: 512,
+    minWidth: 400,
+    minHeight: 280,
+    width: 400,
+    height: 360,
     title: 'Actually Colab',
     icon: getAssetPath('icon.png'),
     webPreferences: {
@@ -103,8 +103,8 @@ const createWindow = async () => {
 
   kernelWindow = new BrowserWindow({
     show: false,
-    width: 640,
-    height: 512,
+    width: 400,
+    height: 280,
     title: 'Kernel [hidden in prod]',
     webPreferences: {
       nodeIntegration: true,
