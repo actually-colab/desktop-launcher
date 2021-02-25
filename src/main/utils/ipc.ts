@@ -2,10 +2,8 @@ import { BrowserWindow } from 'electron';
 
 import {
   IpcKernelProcessPayload,
-  IpcLoginPayload,
   IpcMainToKernelPayload,
   IPC_KERNEL_PROCESS_CHANNEL,
-  IPC_LOGIN_CHANNEL,
   IPC_MAIN_TO_KERNEL_CHANNEL,
 } from '../../shared/types/ipc';
 
@@ -21,11 +19,4 @@ export const sendToKernelProcess = (window: BrowserWindow | null, payload: IpcMa
  */
 export const sendKernelProcessToClient = (window: BrowserWindow | null, payload: IpcKernelProcessPayload) => {
   window?.webContents.send(IPC_KERNEL_PROCESS_CHANNEL, payload);
-};
-
-/**
- * Send an IPC login payload to the client process from the main process
- */
-export const sendLoginToClient = (window: BrowserWindow | null, payload: IpcLoginPayload) => {
-  window?.webContents.send(IPC_LOGIN_CHANNEL, payload);
 };

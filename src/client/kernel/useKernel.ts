@@ -6,23 +6,16 @@ import { IpcKernelProcessPayload, IPC_KERNEL_PROCESS_CHANNEL } from '../../share
 
 import { sendKernelProcessToMain } from '../utils/ipc';
 import { ReduxState } from '../redux';
-import { _editor } from '../redux/actions';
+import { _kernel } from '../redux/actions';
 import { extractGatewayUri } from './jupyter';
 
 /**
  * Hook to connect to a kernel
  */
 const useKernel = () => {
-  const isConnectingToKernel = useSelector((state: ReduxState) => state.editor.isConnectingToKernel);
-  const connectToKernelErrorMessage = useSelector((state: ReduxState) => state.editor.connectToKernelErrorMessage);
-  const gatewayUri = useSelector((state: ReduxState) => state.editor.gatewayUri);
-  const kernelPid = useSelector((state: ReduxState) => state.editor.kernelPid);
-  const kernel = useSelector((state: ReduxState) => state.editor.kernel);
+  const kernelPid = useSelector((state: ReduxState) => state.kernel.kernelPid);
 
   const dispatch = useDispatch();
-  const dispatchConnectToKernel = React.useCallback((uri: string) => dispatch(_editor.connectToKernel(uri)), [
-    dispatch,
-  ]);
 
   /**
    * Kernel Process IPC listener
@@ -35,14 +28,14 @@ const useKernel = () => {
 
           if ((data.pid ?? -1) !== -1) {
             // Update the kernel PID
-            dispatch(_editor.kernelProcessStart(data.pid, data.version));
+            dispatch(_kernel.kernelProcessStart(data.pid, data.version));
           }
           break;
         }
         case 'end': {
           console.log('Kernel process was killed', data);
 
-          dispatch(_editor.kernelProcessStart(-1, ''));
+          dispatch(_kernel.kernelProcessStart(-1, ''));
           break;
         }
         case 'stdout': {
@@ -54,7 +47,7 @@ const useKernel = () => {
             console.log('Found gateway URI', uri);
 
             // Update the gateway uri
-            dispatch(_editor.setKernelGateway(uri));
+            dispatch(_kernel.setKernelGateway(uri));
           }
 
           // Log the message to kernel outputs
@@ -63,7 +56,7 @@ const useKernel = () => {
           for (const piece of messagePieces) {
             if (piece.startsWith('[')) {
               dispatch(
-                _editor.kernelProcessStdout({
+                _kernel.kernelProcessStdout({
                   ...data,
                   message: piece,
                 })
@@ -101,22 +94,7 @@ const useKernel = () => {
     };
   }, [ipcKernelListener, kernelPid]);
 
-  /**
-   * Manage the kernel connection
-   */
-  React.useEffect(() => {
-    if (
-      kernelPid !== -1 &&
-      gatewayUri !== '' &&
-      !isConnectingToKernel &&
-      connectToKernelErrorMessage === '' &&
-      kernel === null
-    ) {
-      dispatchConnectToKernel(gatewayUri);
-    }
-  }, [connectToKernelErrorMessage, dispatchConnectToKernel, gatewayUri, isConnectingToKernel, kernel, kernelPid]);
-
-  return kernel;
+  return null;
 };
 
 export default useKernel;
