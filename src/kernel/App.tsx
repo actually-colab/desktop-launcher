@@ -4,6 +4,9 @@ import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { getGatewayVersion, installGateway } from './system/jupyter';
 import { sendKernelProcessToMain } from './utils/ipc';
 
+const ALLOWED_ORIGIN =
+  process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://app.actuallycolab.org';
+
 /**
  * The kernel process renderer's entry point
  */
@@ -43,7 +46,7 @@ const EntryPoint: React.FC = () => {
       // Spawn the kernel gateway
       kernelProcess.current = spawn('jupyter', [
         'kernelgateway',
-        '--KernelGatewayApp.allow_origin="*"',
+        `--KernelGatewayApp.allow_origin="${ALLOWED_ORIGIN}"`,
         '--KernelGatewayApp.allow_headers="content-type"',
       ]);
 
