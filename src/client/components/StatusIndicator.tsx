@@ -1,6 +1,8 @@
 import React from 'react';
 import { Badge, Tooltip, Whisper, WhisperProps } from 'rsuite';
 
+import { spacing } from '../constants/theme';
+
 /**
  * Props for the StatusIndicator component
  */
@@ -23,8 +25,8 @@ const StatusIndicator: React.FC<StatusIndicatorProps> = ({ color, content, textP
       <Badge
         style={{
           background: color,
-          marginRight: textPlacement === 'right' ? 8 : 0,
-          marginLeft: textPlacement === 'left' ? 8 : 0,
+          marginRight: textPlacement === 'right' ? spacing.DEFAULT / 2 : 0,
+          marginLeft: textPlacement === 'left' ? spacing.DEFAULT / 2 : 0,
         }}
         content={content}
       />

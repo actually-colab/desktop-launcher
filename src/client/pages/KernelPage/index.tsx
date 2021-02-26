@@ -4,10 +4,11 @@ import { StyleSheet, css } from 'aphrodite';
 import { format } from 'date-fns';
 import { Button, Icon } from 'rsuite';
 
+import { ALLOWED_ORIGIN } from '../../../shared/constants/client';
+
 import { ReduxState } from '../../redux';
 import { palette, spacing } from '../../constants/theme';
 import useKernel from '../../kernel/useKernel';
-import { StatusIndicator } from '../../components';
 import { openAppPage } from '../../utils/redirect';
 
 const styles = StyleSheet.create({
@@ -105,6 +106,21 @@ const KeyValue: React.FC<{ attributeKey: string | React.ReactNode; attributeValu
 };
 
 /**
+ * A check or x indicator for status health
+ */
+const StatusIcon: React.FC<{ healthy: boolean }> = ({ healthy }) => {
+  return (
+    <Icon
+      icon={healthy ? 'check' : 'close'}
+      style={{
+        width: 18,
+        color: healthy ? palette.SUCCESS : palette.ERROR,
+      }}
+    />
+  );
+};
+
+/**
  * The kernel page
  */
 const KernelPage: React.FC = () => {
@@ -138,10 +154,20 @@ const KernelPage: React.FC = () => {
               <div className={css(styles.headerContainer)}>
                 <div>
                   <KeyValue
+                    attributeKey="Allowed Origin"
+                    attributeValue={
+                      <React.Fragment>
+                        <Icon icon="lock" style={{ width: 18, color: palette.SUCCESS }} />
+                        {ALLOWED_ORIGIN}
+                      </React.Fragment>
+                    }
+                  />
+
+                  <KeyValue
                     attributeKey="Gateway URI"
                     attributeValue={
                       <React.Fragment>
-                        <StatusIndicator textPlacement="right" color={gatewayUri ? palette.SUCCESS : palette.ERROR} />
+                        <StatusIcon healthy={gatewayUri !== ''} />
                         {gatewayUri || 'Unknown'}
                       </React.Fragment>
                     }
@@ -151,10 +177,7 @@ const KernelPage: React.FC = () => {
                     attributeKey="Gateway Version"
                     attributeValue={
                       <React.Fragment>
-                        <StatusIndicator
-                          textPlacement="right"
-                          color={gatewayVersion ? palette.SUCCESS : palette.ERROR}
-                        />
+                        <StatusIcon healthy={gatewayVersion !== ''} />
                         {gatewayVersion || 'Unknown'}
                       </React.Fragment>
                     }
@@ -164,10 +187,7 @@ const KernelPage: React.FC = () => {
                     attributeKey="Kernal PID"
                     attributeValue={
                       <React.Fragment>
-                        <StatusIndicator
-                          textPlacement="right"
-                          color={kernelPid !== -1 ? palette.SUCCESS : palette.ERROR}
-                        />
+                        <StatusIcon healthy={kernelPid !== -1} />
                         {kernelPid !== -1 ? kernelPid : 'No Process'}
                       </React.Fragment>
                     }
