@@ -1,6 +1,7 @@
 import { ipcRenderer, IpcRendererEvent } from 'electron';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { format } from 'date-fns';
 
 import { IpcKernelProcessPayload, IPC_KERNEL_PROCESS_CHANNEL } from '../../shared/types/ipc';
 
@@ -59,6 +60,7 @@ const useKernel = () => {
                 _kernel.kernelProcessStdout({
                   ...data,
                   message: piece,
+                  dateString: format(data.date, 'Pp'),
                 })
               );
 

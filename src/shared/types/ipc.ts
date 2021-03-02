@@ -17,6 +17,7 @@ export type StdoutMessage = {
   id: number;
   message: string;
   date: Date;
+  dateString?: string;
 };
 
 type IpcKernelProcessStdout = {

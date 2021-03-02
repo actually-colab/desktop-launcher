@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { StyleSheet, css } from 'aphrodite';
-import { format } from 'date-fns';
 import { Button, Icon } from 'rsuite';
 
 import { ALLOWED_ORIGIN } from '../../../shared/constants/client';
@@ -211,7 +210,7 @@ const KernelPage: React.FC = () => {
               <pre className={css(styles.output)}>
                 {kernelStdout.map((stdout) => (
                   <React.Fragment key={stdout.id}>
-                    <span className={css(styles.bold)}>{format(stdout.date, 'Pp')}</span>
+                    <span className={css(styles.bold)}>{stdout.dateString}</span>
                     {'\n'}
                     {stdout.message}
                     {'\n\n'}
