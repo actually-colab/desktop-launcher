@@ -46,6 +46,7 @@ const EntryPoint: React.FC = () => {
         'kernelgateway',
         `--KernelGatewayApp.allow_origin="${ALLOWED_ORIGIN}"`,
         '--KernelGatewayApp.allow_headers="content-type"',
+        '--KernelGatewayApp.allow_methods="*"',
       ]);
 
       let messageId = 0;
