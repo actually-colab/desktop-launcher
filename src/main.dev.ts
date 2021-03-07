@@ -283,12 +283,12 @@ ipcMain.on(IPC_KERNEL_PROCESS_CHANNEL, (_, data: IpcKernelProcessPayload) => {
       if (isClientReady) {
         if (messageQueue.length > 0) {
           // Empty the message queue
-          for (const message of messageQueue) {
+          messageQueue.forEach((message) =>
             sendKernelProcessToClient(mainWindow, {
               type: 'stdout',
               ...message,
-            });
-          }
+            })
+          );
         }
 
         sendKernelProcessToClient(mainWindow, data);

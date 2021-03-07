@@ -56,6 +56,7 @@ const useKernel = () => {
 
           for (const piece of messagePieces) {
             if (piece.startsWith('[')) {
+              // Only dispatch one with a proper timestamp tag
               dispatch(
                 _kernel.kernelProcessStdout({
                   ...data,
