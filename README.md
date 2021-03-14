@@ -1,6 +1,6 @@
 # desktop-launcher
 
-![Commit Validation](https://github.com/actually-colab/desktop-launcher/workflows/Commit%20Validation/badge.svg) ![PR Validation](https://github.com/actually-colab/desktop-launcher/workflows/PR%20Validation/badge.svg) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/actually-colab/desktop-launcher.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/actually-colab/desktop-launcher/context:javascript) [![Lines of Code](https://tokei.rs/b1/github/actually-colab/desktop-launcher)](https://github.com/actually-colab/desktop-launcher)
+[![Validation](https://github.com/actually-colab/desktop-launcher/actions/workflows/validation.yml/badge.svg)](https://github.com/actually-colab/desktop-launcher/actions/workflows/validation.yml) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/actually-colab/desktop-launcher.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/actually-colab/desktop-launcher/context:javascript) [![Lines of Code](https://tokei.rs/b1/github/actually-colab/desktop-launcher)](https://github.com/actually-colab/desktop-launcher)
 
 ### The Kernel Gateway
 

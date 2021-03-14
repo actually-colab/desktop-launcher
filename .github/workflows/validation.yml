@@ -1,7 +1,12 @@
-name: PR Validation
+name: Validation
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
+    branches:
+      - master
     types: [opened, reopened, edited, synchronize]
 
 jobs:
