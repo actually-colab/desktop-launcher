@@ -203,7 +203,11 @@ const KernelPage: React.FC = () => {
 
               <p className={css(styles.keyText)}>
                 Kernel Stdout
-                <Button appearance="subtle" size="xs" onClick={() => setIsOutputPinned(!isOutputPinned)}>
+                <Button
+                  appearance="subtle"
+                  size="xs"
+                  onClick={() => setIsOutputPinned((prevIsOutputPinned) => !prevIsOutputPinned)}
+                >
                   <Icon icon="thumb-tack" style={isOutputPinned ? { color: palette.PRIMARY } : undefined} />
                 </Button>
               </p>
