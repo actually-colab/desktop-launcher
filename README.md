@@ -43,6 +43,29 @@ To package apps for the local platform:
 yarn package
 ```
 
+To package apps for all platforms:
+
+```bash
+yarn package:all
+```
+
+To notarize on macOS you need to create a file `macos.cred.sh` at the root of the project:
+
+```bash
+#!/bin/bash
+export CI="true"
+export APPLE_ID="email goes here"
+export APPLE_ID_PASS="password goes here"
+```
+
+You may need an app specific password which you can generate on the AppleID webpage.
+
+Then run the following command:
+
+```bash
+yarn package:notarize
+```
+
 ## Docs
 
 See [docs and guides here](https://electron-react-boilerplate.js.org/docs/installation)
