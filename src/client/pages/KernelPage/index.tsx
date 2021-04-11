@@ -68,6 +68,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  outputContainer: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column-reverse',
+    overflowX: 'auto',
+    overflowY: 'auto',
+  },
   output: {
     flex: 1,
     marginTop: spacing.DEFAULT / 4,
@@ -78,8 +85,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: palette.LIGHT_GRAY,
     color: palette.ALMOST_BLACK,
-    overflowX: 'auto',
-    overflowY: 'auto',
     fontSize: 12,
     whiteSpace: 'pre-wrap',
     wordBreak: 'break-word',
@@ -126,23 +131,10 @@ const KernelPage: React.FC = () => {
   // Connect to IPC
   useKernel();
 
-  const outputAnchorRef = React.useRef<HTMLDivElement | null>(null);
-
   const kernelPid = useSelector((state: ReduxState) => state.kernel.kernelPid);
   const gatewayVersion = useSelector((state: ReduxState) => state.kernel.gatewayVersion);
   const gatewayUri = useSelector((state: ReduxState) => state.kernel.gatewayUri);
   const kernelStdout = useSelector((state: ReduxState) => state.kernel.kernelStdout);
-
-  const [isOutputPinned, setIsOutputPinned] = React.useState<boolean>(true);
-
-  /**
-   * Auto scroll output page if pinned
-   */
-  React.useEffect(() => {
-    if (isOutputPinned && kernelStdout.length > 0) {
-      outputAnchorRef?.current?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [isOutputPinned, kernelStdout.length]);
 
   return (
     <div className={css(styles.container)}>
@@ -201,28 +193,21 @@ const KernelPage: React.FC = () => {
                 </div>
               </div>
 
-              <p className={css(styles.keyText)}>
-                Kernel Stdout
-                <Button
-                  appearance="subtle"
-                  size="xs"
-                  onClick={() => setIsOutputPinned((prevIsOutputPinned) => !prevIsOutputPinned)}
-                >
-                  <Icon icon="thumb-tack" style={isOutputPinned ? { color: palette.PRIMARY } : undefined} />
-                </Button>
-              </p>
-              <pre className={css(styles.output)}>
-                {kernelStdout.map((stdout) => (
-                  <React.Fragment key={stdout.id}>
-                    <span className={css(styles.bold)}>{stdout.dateString}</span>
-                    {'\n'}
-                    {stdout.message}
-                    {'\n\n'}
-                  </React.Fragment>
-                ))}
-
-                <div ref={outputAnchorRef} />
-              </pre>
+              <p className={css(styles.keyText)}>Kernel Stdout</p>
+              <div className={css(styles.outputContainer)}>
+                <div>
+                  <pre className={css(styles.output)}>
+                    {kernelStdout.map((stdout) => (
+                      <React.Fragment key={stdout.id}>
+                        <span className={css(styles.bold)}>{stdout.dateString}</span>
+                        {'\n'}
+                        {stdout.message}
+                        {'\n\n'}
+                      </React.Fragment>
+                    ))}
+                  </pre>
+                </div>
+              </div>
             </div>
           </div>
         </div>
