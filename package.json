@@ -118,7 +118,7 @@
       "url": "https://github.com/baileytincher"
     }
   ],
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/actually-colab/desktop-launcher/issues"
   },

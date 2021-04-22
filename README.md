@@ -69,3 +69,7 @@ yarn package:notarize
 ## Docs
 
 See [docs and guides here](https://electron-react-boilerplate.js.org/docs/installation)
+
+## License
+
+`@actually-colab/desktop-launcher` is [BSD-3-Clause licensed](./LICENSE)
