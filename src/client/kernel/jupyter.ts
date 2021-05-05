@@ -9,7 +9,17 @@ export const extractGatewayUri = (message: string) => {
   const index = message.indexOf(GATEWAY_STEM);
 
   if (index >= 0) {
-    return message.substring(index).trim();
+    const subMessage = message.substring(index);
+    const tokenIndex = subMessage.indexOf('/?token=');
+
+    console.log(subMessage);
+    console.log(tokenIndex);
+
+    if (tokenIndex === -1) {
+      return subMessage;
+    }
+
+    return subMessage.substring(0, tokenIndex).trim();
   }
 
   return '';

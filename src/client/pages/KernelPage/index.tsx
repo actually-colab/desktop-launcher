@@ -74,16 +74,17 @@ const styles = StyleSheet.create({
     flexDirection: 'column-reverse',
     overflowX: 'auto',
     overflowY: 'auto',
+    borderRadius: 4,
+    backgroundColor: palette.LIGHT_GRAY,
   },
   output: {
     flex: 1,
     marginTop: spacing.DEFAULT / 4,
     marginBottom: 0,
     paddingTop: spacing.DEFAULT / 2,
+    paddingBottom: spacing.DEFAULT / 2,
     paddingLeft: spacing.DEFAULT / 2,
     paddingRight: spacing.DEFAULT / 4,
-    borderRadius: 4,
-    backgroundColor: palette.LIGHT_GRAY,
     color: palette.ALMOST_BLACK,
     fontSize: 12,
     whiteSpace: 'pre-wrap',
@@ -155,7 +156,7 @@ const KernelPage: React.FC = () => {
                   />
 
                   <KeyValue
-                    attributeKey="Gateway URI"
+                    attributeKey="Jupyter URI"
                     attributeValue={
                       <React.Fragment>
                         <StatusIcon healthy={gatewayUri !== ''} />
@@ -165,7 +166,7 @@ const KernelPage: React.FC = () => {
                   />
 
                   <KeyValue
-                    attributeKey="Gateway Version"
+                    attributeKey="Jupyter Version"
                     attributeValue={
                       <React.Fragment>
                         <StatusIcon healthy={gatewayVersion !== ''} />
@@ -199,10 +200,8 @@ const KernelPage: React.FC = () => {
                   <pre className={css(styles.output)}>
                     {kernelStdout.map((stdout) => (
                       <React.Fragment key={stdout.id}>
-                        <span className={css(styles.bold)}>{stdout.dateString}</span>
-                        {'\n'}
                         {stdout.message}
-                        {'\n\n'}
+                        {'\n'}
                       </React.Fragment>
                     ))}
                   </pre>
