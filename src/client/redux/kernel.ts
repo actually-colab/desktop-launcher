@@ -9,6 +9,7 @@ export interface KernelState {
   gatewayUri: string;
   gatewayVersion: string;
   kernelPid: number;
+  kernelToken: string;
   kernelStdout: StdoutMessage[];
 }
 
@@ -16,6 +17,7 @@ const initialState: KernelState = {
   gatewayUri: '',
   gatewayVersion: '',
   kernelPid: -1,
+  kernelToken: '',
   kernelStdout: [],
 };
 
@@ -34,6 +36,7 @@ const reducer = (state = initialState, action: KernelActionTypes): KernelState =
         ...state,
         gatewayVersion: action.version,
         kernelPid: action.pid,
+        kernelToken: action.token,
       };
     }
     case KERNEL_PROCESS.STDOUT:

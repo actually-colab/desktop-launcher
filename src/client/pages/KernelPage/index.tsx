@@ -126,13 +126,21 @@ const StatusIcon: React.FC<{ healthy: boolean }> = ({ healthy }) => {
 };
 
 /**
- * The kernel page
+ * Mounted helper hooks
  */
-const KernelPage: React.FC = () => {
+const Helpers: React.FC = () => {
   // Connect to IPC
   useKernel();
 
+  return null;
+};
+
+/**
+ * The kernel page
+ */
+const KernelPage: React.FC = () => {
   const kernelPid = useSelector((state: ReduxState) => state.kernel.kernelPid);
+  const kernelToken = useSelector((state: ReduxState) => state.kernel.kernelToken);
   const gatewayVersion = useSelector((state: ReduxState) => state.kernel.gatewayVersion);
   const gatewayUri = useSelector((state: ReduxState) => state.kernel.gatewayUri);
   const kernelStdout = useSelector((state: ReduxState) => state.kernel.kernelStdout);
@@ -161,6 +169,16 @@ const KernelPage: React.FC = () => {
                       <React.Fragment>
                         <StatusIcon healthy={gatewayUri !== ''} />
                         {gatewayUri || 'Unknown'}
+                      </React.Fragment>
+                    }
+                  />
+
+                  <KeyValue
+                    attributeKey="Jupyter Token"
+                    attributeValue={
+                      <React.Fragment>
+                        <StatusIcon healthy={kernelToken !== ''} />
+                        {kernelToken || 'Unknown'}
                       </React.Fragment>
                     }
                   />
@@ -199,10 +217,7 @@ const KernelPage: React.FC = () => {
                 <div>
                   <pre className={css(styles.output)}>
                     {kernelStdout.map((stdout) => (
-                      <React.Fragment key={stdout.id}>
-                        {stdout.message}
-                        {'\n'}
-                      </React.Fragment>
+                      <React.Fragment key={stdout.id}>{stdout.message}</React.Fragment>
                     ))}
                   </pre>
                 </div>
@@ -215,4 +230,16 @@ const KernelPage: React.FC = () => {
   );
 };
 
-export default KernelPage;
+/**
+ * Wrap the page with helpers
+ */
+const KernelPageContainer: React.FC = () => {
+  return (
+    <React.Fragment>
+      <Helpers />
+      <KernelPage />
+    </React.Fragment>
+  );
+};
+
+export default KernelPageContainer;
