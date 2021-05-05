@@ -12,9 +12,6 @@ export const extractGatewayUri = (message: string) => {
     const subMessage = message.substring(index);
     const tokenIndex = subMessage.indexOf('/?token=');
 
-    console.log(subMessage);
-    console.log(tokenIndex);
-
     if (tokenIndex === -1) {
       return subMessage;
     }

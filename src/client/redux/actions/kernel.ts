@@ -5,10 +5,11 @@ import { KernelActionTypes, KERNEL_GATEWAY, KERNEL_PROCESS } from '../../types/r
 /**
  * Handle the kernel process starting with a PID
  */
-export const kernelProcessStart = (pid: number, version: string): KernelActionTypes => ({
+export const kernelProcessStart = (pid: number, version: string, token: string): KernelActionTypes => ({
   type: KERNEL_PROCESS.START,
   pid,
   version,
+  token,
 });
 
 /**

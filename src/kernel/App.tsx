@@ -1,10 +1,10 @@
 import React from 'react';
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
+import { nanoid } from 'nanoid';
 
 import { ALLOWED_ORIGIN } from '../shared/constants/client';
 import { getGatewayVersion, installGateway } from './system/jupyter';
 import { sendKernelProcessToMain } from './utils/ipc';
-
 /**
  * The kernel process renderer's entry point
  */
@@ -41,18 +41,20 @@ const EntryPoint: React.FC = () => {
     }
 
     try {
+      // Generate a random token for the notebook server
+      const token = nanoid();
+
       // Spawn the kernel gateway
       kernelProcess.current = spawn('jupyter', [
         'notebook',
         '--NotebookApp.open_browser=False',
         `--NotebookApp.allow_origin=${ALLOWED_ORIGIN}`,
-        '--NotebookApp.token=dev',
+        `--NotebookApp.token=${token}`,
       ]);
 
       let messageId = 0;
 
-      kernelProcess.current.stderr.setEncoding('utf-8');
-      kernelProcess.current.stderr.on('data', (message: string) => {
+      const messageHandler = (message: string) => {
         console.log('Kernel:', { message });
 
         sendKernelProcessToMain({
@@ -63,7 +65,12 @@ const EntryPoint: React.FC = () => {
         });
 
         messageId++;
-      });
+      };
+
+      kernelProcess.current.stderr.setEncoding('utf-8');
+      kernelProcess.current.stderr.on('data', messageHandler);
+      kernelProcess.current.stdout.setEncoding('utf-8');
+      kernelProcess.current.stdout.on('data', messageHandler);
 
       // Notify main process the kernel is ready
       console.log('Kernel gateway started', kernelProcess.current.pid);
@@ -73,6 +80,7 @@ const EntryPoint: React.FC = () => {
         type: 'start',
         pid: kernelProcess.current.pid,
         version,
+        token,
       });
 
       kernelProcess.current.on('close', () => {

@@ -6,6 +6,7 @@ type IpcKernelProcessStart = {
   type: 'start';
   pid: number;
   version: string;
+  token: string;
 };
 
 type IpcKernelProcessEnd = {

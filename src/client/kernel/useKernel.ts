@@ -14,6 +14,8 @@ import { extractGatewayUri } from './jupyter';
  * Hook to connect to a kernel
  */
 const useKernel = () => {
+  const foundUri = React.useRef<boolean>(false);
+
   const kernelPid = useSelector((state: ReduxState) => state.kernel.kernelPid);
 
   const dispatch = useDispatch();
@@ -29,45 +31,39 @@ const useKernel = () => {
 
           if ((data.pid ?? -1) !== -1) {
             // Update the kernel PID
-            dispatch(_kernel.kernelProcessStart(data.pid, data.version));
+            dispatch(_kernel.kernelProcessStart(data.pid, data.version, data.token));
           }
           break;
         }
         case 'end': {
           console.log('Kernel process was killed', data);
 
-          dispatch(_kernel.kernelProcessStart(-1, ''));
+          dispatch(_kernel.kernelProcessStart(-1, '', ''));
           break;
         }
         case 'stdout': {
           console.log('Received kernel process stdout', data);
 
-          const uri = extractGatewayUri(data.message);
+          if (!foundUri.current) {
+            const uri = extractGatewayUri(data.message);
 
-          if (uri) {
-            console.log('Found gateway URI', uri);
+            if (uri) {
+              console.log('Found gateway URI', uri);
 
-            // Update the gateway uri
-            dispatch(_kernel.setKernelGateway(uri));
+              // Update the gateway uri
+              dispatch(_kernel.setKernelGateway(uri));
+
+              foundUri.current = true;
+            }
           }
 
           // Log the message to kernel outputs
-          const messagePieces = data.message.split('\n');
-
-          for (const piece of messagePieces) {
-            if (piece.startsWith('[')) {
-              // Only dispatch one with a proper timestamp tag
-              dispatch(
-                _kernel.kernelProcessStdout({
-                  ...data,
-                  message: piece,
-                  dateString: format(data.date, 'Pp'),
-                })
-              );
-
-              break;
-            }
-          }
+          dispatch(
+            _kernel.kernelProcessStdout({
+              ...data,
+              dateString: format(data.date, 'Pp'),
+            })
+          );
 
           break;
         }

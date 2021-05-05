@@ -21,6 +21,7 @@ type KernelProcessStartAction = {
   type: typeof KERNEL_PROCESS.START;
   pid: number;
   version: string;
+  token: string;
 };
 
 type KernelProcessStdoutAction = {

@@ -41,6 +41,10 @@ let kernelWindow: BrowserWindow | null = null;
  */
 let kernelPid = -1;
 /**
+ * The token for the kernel process
+ */
+let kernelToken = '';
+/**
  * The version of the kernel gateway running
  */
 let gatewayVersion = '';
@@ -91,9 +95,9 @@ const createWindow = async () => {
   mainWindow = new BrowserWindow({
     show: false,
     minWidth: 420,
-    minHeight: 300,
+    minHeight: 360,
     width: 420,
-    height: 360,
+    height: 420,
     title: 'Actually Colab',
     icon: getAssetPath('icon.png'),
     webPreferences: {
@@ -254,6 +258,7 @@ ipcMain.on(IPC_KERNEL_PROCESS_CHANNEL, (_, data: IpcKernelProcessPayload) => {
           type: 'start',
           pid: kernelPid,
           version: gatewayVersion,
+          token: kernelToken,
         });
       }
 
@@ -263,6 +268,7 @@ ipcMain.on(IPC_KERNEL_PROCESS_CHANNEL, (_, data: IpcKernelProcessPayload) => {
       console.log('Received kernel PID', data.pid);
       kernelPid = data.pid;
       gatewayVersion = data.version;
+      kernelToken = data.token;
 
       if (isClientReady) {
         sendKernelProcessToClient(mainWindow, data);
@@ -273,6 +279,7 @@ ipcMain.on(IPC_KERNEL_PROCESS_CHANNEL, (_, data: IpcKernelProcessPayload) => {
       console.log('Quitting all processes');
       kernelPid = -1;
       gatewayVersion = '';
+      kernelToken = '';
 
       sendKernelProcessToClient(mainWindow, data);
       break;
