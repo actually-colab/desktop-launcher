@@ -10,7 +10,7 @@ export const getGatewayVersion = async (): Promise<string | null> => {
   } | null = null;
 
   try {
-    output = await promiseExec('jupyter kernelgateway --version');
+    output = await promiseExec('jupyter notebook --version');
   } catch (error) {
     console.error(error);
     return null;
@@ -29,7 +29,7 @@ export const getGatewayVersion = async (): Promise<string | null> => {
  */
 export const installGateway = async (): Promise<string | null> => {
   try {
-    const { stderr, stdout } = await promiseExec('pip3 install jupyter_kernel_gateway');
+    const { stderr, stdout } = await promiseExec('pip3 install notebook');
 
     console.log('Install output', { stderr, stdout });
   } catch (error) {
