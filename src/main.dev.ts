@@ -94,9 +94,9 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    minWidth: 420,
+    minWidth: 480,
     minHeight: 360,
-    width: 420,
+    width: 480,
     height: 420,
     title: 'Actually Colab',
     icon: getAssetPath('icon.png'),
