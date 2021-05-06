@@ -1,7 +1,8 @@
 import React from 'react';
+import { clipboard } from 'electron';
 import { useSelector } from 'react-redux';
 import { StyleSheet, css } from 'aphrodite';
-import { Button, Icon } from 'rsuite';
+import { Button, Icon, IconButton, IconProps } from 'rsuite';
 
 import { ALLOWED_ORIGIN } from '../../../shared/constants/client';
 
@@ -68,6 +69,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  copyButton: {
+    marginLeft: spacing.DEFAULT / 4,
+  },
   outputContainer: {
     display: 'flex',
     flex: 1,
@@ -113,10 +117,14 @@ const KeyValue: React.FC<{ attributeKey: string | React.ReactNode; attributeValu
 /**
  * A check or x indicator for status health
  */
-const StatusIcon: React.FC<{ healthy: boolean }> = ({ healthy }) => {
+const StatusIcon: React.FC<{
+  healthy: boolean;
+  healthyIcon?: IconProps['icon'];
+  unhealthyIcon?: IconProps['icon'];
+}> = ({ healthy, healthyIcon = 'check', unhealthyIcon = 'close' }) => {
   return (
     <Icon
-      icon={healthy ? 'check' : 'close'}
+      icon={healthy ? healthyIcon : unhealthyIcon}
       style={{
         width: 18,
         color: healthy ? palette.SUCCESS : palette.ERROR,
@@ -157,7 +165,7 @@ const KernelPage: React.FC = () => {
                     attributeKey="Allowed Origin"
                     attributeValue={
                       <React.Fragment>
-                        <Icon icon="lock" style={{ width: 18, color: palette.SUCCESS }} />
+                        <StatusIcon healthy healthyIcon="lock" unhealthyIcon="lock" />
                         {ALLOWED_ORIGIN}
                       </React.Fragment>
                     }
@@ -177,8 +185,15 @@ const KernelPage: React.FC = () => {
                     attributeKey="Jupyter Token"
                     attributeValue={
                       <React.Fragment>
-                        <StatusIcon healthy={kernelToken !== ''} />
+                        <StatusIcon healthy={kernelToken !== ''} healthyIcon="key" unhealthyIcon="key" />
                         {kernelToken || 'Unknown'}
+                        <IconButton
+                          className={css(styles.copyButton)}
+                          appearance="subtle"
+                          size="xs"
+                          icon={<Icon icon="copy" />}
+                          onClick={() => clipboard.writeText(kernelToken)}
+                        />
                       </React.Fragment>
                     }
                   />
