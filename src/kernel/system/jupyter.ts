@@ -29,7 +29,7 @@ export const getGatewayVersion = async (): Promise<string | null> => {
  */
 export const installGateway = async (): Promise<string | null> => {
   try {
-    const { stderr, stdout } = await promiseExec('pip3 install notebook');
+    const { stderr, stdout } = await promiseExec('pip install notebook');
 
     console.log('Install output', { stderr, stdout });
   } catch (error) {
