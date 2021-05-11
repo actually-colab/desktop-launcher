@@ -1,4 +1,4 @@
-<img src=".readme/img/header.png" width="100%">
+<img src="https://raw.githubusercontent.com/actually-colab/graphics/master/header/header.png" width="100%">
 
 [![Validation](https://github.com/actually-colab/desktop-launcher/actions/workflows/validation.yml/badge.svg)](https://github.com/actually-colab/desktop-launcher/actions/workflows/validation.yml) ![GitHub](https://img.shields.io/github/license/actually-colab/desktop-launcher) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/actually-colab/desktop-launcher.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/actually-colab/desktop-launcher/context:javascript) ![GitHub repo size](https://img.shields.io/github/repo-size/actually-colab/desktop-launcher) [![Lines of Code](https://tokei.rs/b1/github/actually-colab/desktop-launcher)](https://github.com/actually-colab/desktop-launcher)
 
