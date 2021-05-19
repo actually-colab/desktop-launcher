@@ -16,6 +16,12 @@ This process is started by the kernel hidden renderer process and communicates w
 jupyter notebook --NotebookApp.open_browser="False" --NotebookApp.allow_origin="*" --NotebookApp.token="CHOOSE A TOKEN VALUE"
 ```
 
+Alternatively you can use `jupyter lab`:
+
+```bash
+jupyter lab --no-browser --NotebookApp.allow_origin="*" --NotebookApp.token="CHOOSE A TOKEN VALUE"
+```
+
 > Setting the CORS Access-Control-Allow-Origin to `*` is generally a bad practice for security reasons. This will allow any website or malicious agent to execute code against your machine if they know what to look for. Instead, use the following origins depending on if you are in development or production:
 >
 > - Development: `http://localhost:4000`
