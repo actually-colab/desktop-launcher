@@ -1,7 +1,7 @@
 {
   "name": "actually-colab",
   "productName": "actually-colab",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Because Google Colab isn't actually collaborative",
   "main": "./main.prod.js",
   "author": {
