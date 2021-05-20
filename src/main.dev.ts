@@ -284,6 +284,12 @@ ipcMain.on(IPC_KERNEL_PROCESS_CHANNEL, (_, data: IpcKernelProcessPayload) => {
       sendKernelProcessToClient(mainWindow, data);
       break;
     }
+    case 'new-token': {
+      console.log('Requesting new token');
+
+      sendKernelProcessToClient(kernelWindow, data);
+      break;
+    }
     case 'stdout': {
       console.log('Received stdout', data.message);
 

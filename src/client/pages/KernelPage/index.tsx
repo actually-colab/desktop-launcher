@@ -1,12 +1,13 @@
 import React from 'react';
 import { clipboard } from 'electron';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, css } from 'aphrodite';
 import { Button, Icon, IconButton, IconProps } from 'rsuite';
 
 import { ALLOWED_ORIGIN } from '../../../shared/constants/client';
 
 import { ReduxState } from '../../redux';
+import { _kernel } from '../../redux/actions';
 import { palette, spacing } from '../../constants/theme';
 import useKernel from '../../kernel/useKernel';
 import { openAppPage } from '../../utils/redirect';
@@ -153,6 +154,9 @@ const KernelPage: React.FC = () => {
   const gatewayUri = useSelector((state: ReduxState) => state.kernel.gatewayUri);
   const kernelStdout = useSelector((state: ReduxState) => state.kernel.kernelStdout);
 
+  const dispatch = useDispatch();
+  const dispatchRequestNewToken = React.useCallback(() => dispatch(_kernel.kernelProcessRequestNewToken()), [dispatch]);
+
   return (
     <div className={css(styles.container)}>
       <div className={css(styles.page)}>
@@ -182,7 +186,18 @@ const KernelPage: React.FC = () => {
                   />
 
                   <KeyValue
-                    attributeKey="Jupyter Token"
+                    attributeKey={
+                      <React.Fragment>
+                        <span>Jupyter Token</span>
+                        <IconButton
+                          className={css(styles.copyButton)}
+                          appearance="subtle"
+                          size="xs"
+                          icon={<Icon icon="refresh" />}
+                          onClick={dispatchRequestNewToken}
+                        />
+                      </React.Fragment>
+                    }
                     attributeValue={
                       <React.Fragment>
                         <StatusIcon healthy={kernelToken !== ''} healthyIcon="key" unhealthyIcon="key" />

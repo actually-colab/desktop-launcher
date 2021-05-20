@@ -5,6 +5,8 @@ import { StdoutMessage } from '../../../shared/types/ipc';
 
 export const KERNEL_PROCESS = {
   START: 'KERNEL_PROCESS_START',
+  STOP: 'KERNEL_PROCESS_STOP',
+  REQUEST_NEW_TOKEN: 'REQUEST_NEW_TOKEN',
   STDOUT: 'KERNEL_PROCESS_STDOUT',
 } as const;
 export const KERNEL_GATEWAY = {
@@ -24,6 +26,14 @@ type KernelProcessStartAction = {
   token: string;
 };
 
+type KernelProcessStopAction = {
+  type: typeof KERNEL_PROCESS.STOP;
+};
+
+type KernelProcessRequestNewTokenAction = {
+  type: typeof KERNEL_PROCESS.REQUEST_NEW_TOKEN;
+};
+
 type KernelProcessStdoutAction = {
   type: typeof KERNEL_PROCESS.STDOUT;
   message: StdoutMessage;
@@ -37,7 +47,12 @@ type SetKernelGatewayAction = {
 /**
  * An action for manipulating the editor redux store
  */
-export type KernelActionTypes = KernelProcessStartAction | KernelProcessStdoutAction | SetKernelGatewayAction;
+export type KernelActionTypes =
+  | KernelProcessStartAction
+  | KernelProcessStopAction
+  | KernelProcessRequestNewTokenAction
+  | KernelProcessStdoutAction
+  | SetKernelGatewayAction;
 
 /**
  * An asynchronous action for manipulating the editor redux store
