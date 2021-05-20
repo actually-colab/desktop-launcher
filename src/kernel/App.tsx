@@ -1,8 +1,11 @@
+import { ipcRenderer, IpcRendererEvent } from 'electron';
 import React from 'react';
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { nanoid } from 'nanoid';
 
 import { ALLOWED_ORIGIN } from '../shared/constants/client';
+import { IpcKernelProcessPayload, IPC_KERNEL_PROCESS_CHANNEL } from '../shared/types/ipc';
+import { promiseExec } from '../shared/system/process';
 import { getGatewayVersion, installGateway } from './system/jupyter';
 import { sendKernelProcessToMain } from './utils/ipc';
 /**
@@ -10,6 +13,9 @@ import { sendKernelProcessToMain } from './utils/ipc';
  */
 const EntryPoint: React.FC = () => {
   const kernelProcess = React.useRef<ChildProcessWithoutNullStreams | null>(null);
+  const kernelProcessStatus = React.useRef<'starting' | ''>('');
+  const kernelProcessWaitingForToken = React.useRef<boolean>(false);
+  const kernelProcessMessageIndex = React.useRef<number>(0);
   const [gatewayVersion, setGatewayVersion] = React.useState<string>('');
   const [pid, setPid] = React.useState<number>(-1);
   const [kernelError, setKernelError] = React.useState<string>('');
@@ -21,6 +27,8 @@ const EntryPoint: React.FC = () => {
     if (kernelProcess.current !== null) {
       return;
     }
+
+    kernelProcessStatus.current = 'starting';
 
     // Check if the kernel gateway is available
     let version = await getGatewayVersion();
@@ -41,8 +49,14 @@ const EntryPoint: React.FC = () => {
     }
 
     try {
-      // Generate a random token for the notebook server
-      const token = nanoid();
+      // Check for a saved token for the notebook server
+      let token = localStorage.getItem('jupyter-token');
+
+      // If no token is found, generate and save it
+      if (!token) {
+        token = nanoid();
+        localStorage.setItem('jupyter-token', token);
+      }
 
       // Spawn the kernel gateway
       kernelProcess.current = spawn('jupyter', [
@@ -52,19 +66,17 @@ const EntryPoint: React.FC = () => {
         `--NotebookApp.token=${token}`,
       ]);
 
-      let messageId = 0;
-
       const messageHandler = (message: string) => {
         console.log('Kernel:', { message });
 
         sendKernelProcessToMain({
           type: 'stdout',
-          id: messageId,
+          id: kernelProcessMessageIndex.current,
           message,
           date: new Date(),
         });
 
-        messageId++;
+        kernelProcessMessageIndex.current++;
       };
 
       kernelProcess.current.stderr.setEncoding('utf-8');
@@ -90,7 +102,11 @@ const EntryPoint: React.FC = () => {
           type: 'end',
           pid: kernelProcess.current?.pid ?? -1,
         });
+
+        kernelProcess.current = null;
       });
+
+      kernelProcessStatus.current = '';
     } catch (error) {
       console.error(error);
       setKernelError(error.message);
@@ -98,11 +114,51 @@ const EntryPoint: React.FC = () => {
   }, []);
 
   /**
+   * Kernel Process IPC listener
+   */
+  const ipcKernelListener = React.useCallback(
+    async (_: IpcRendererEvent, data: IpcKernelProcessPayload) => {
+      switch (data.type) {
+        case 'new-token': {
+          console.log('New token request received');
+
+          // Verify that there is no ongoing action to wait for
+          if (kernelProcessStatus.current !== '') {
+            kernelProcessWaitingForToken.current = true;
+            break;
+          }
+
+          // Kill the existing process
+          if (kernelProcess.current !== null) {
+            await promiseExec('jupyter notebook stop');
+          }
+
+          // Generate a new token
+          localStorage.setItem('jupyter-token', nanoid());
+
+          // Restart the kernel process
+          startKernelProcess();
+          break;
+        }
+        default:
+          break;
+      }
+    },
+    [startKernelProcess]
+  );
+
+  /**
    * Manage the kernel process
    */
   React.useEffect(() => {
+    ipcRenderer.on(IPC_KERNEL_PROCESS_CHANNEL, ipcKernelListener);
+
     startKernelProcess();
-  }, [startKernelProcess]);
+
+    return () => {
+      ipcRenderer.removeListener(IPC_KERNEL_PROCESS_CHANNEL, ipcKernelListener);
+    };
+  }, [ipcKernelListener, startKernelProcess]);
 
   return (
     <div>

@@ -38,6 +38,7 @@ const useKernel = () => {
         case 'end': {
           console.log('Kernel process was killed', data);
 
+          foundUri.current = false;
           dispatch(_kernel.kernelProcessStart(-1, '', ''));
           break;
         }

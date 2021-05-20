@@ -14,6 +14,10 @@ type IpcKernelProcessEnd = {
   pid: number;
 };
 
+type IpcKernelProcessRequestNewToken = {
+  type: 'new-token';
+};
+
 export type StdoutMessage = {
   id: number;
   message: string;
@@ -36,6 +40,7 @@ export type IpcKernelProcessPayload =
   | IpcKernelProcessReady
   | IpcKernelProcessStart
   | IpcKernelProcessEnd
+  | IpcKernelProcessRequestNewToken
   | IpcKernelProcessStdout;
 
 type IpcMainToKernelRequestClose = {
