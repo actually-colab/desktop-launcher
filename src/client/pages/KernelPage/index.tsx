@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, css } from 'aphrodite';
 import { Button, Icon, IconButton, IconProps } from 'rsuite';
 
-import { ALLOWED_ORIGIN } from '../../../shared/constants/client';
+import { ALLOWED_ORIGIN_PRETTY } from '../../../shared/constants/client';
 
 import { ReduxState } from '../../redux';
 import { _kernel } from '../../redux/actions';
@@ -170,7 +170,7 @@ const KernelPage: React.FC = () => {
                     attributeValue={
                       <React.Fragment>
                         <StatusIcon healthy healthyIcon="lock" unhealthyIcon="lock" />
-                        {ALLOWED_ORIGIN}
+                        {ALLOWED_ORIGIN_PRETTY}
                       </React.Fragment>
                     }
                   />

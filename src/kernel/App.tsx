@@ -62,8 +62,8 @@ const EntryPoint: React.FC = () => {
       kernelProcess.current = spawn('jupyter', [
         'notebook',
         '--NotebookApp.open_browser=False',
-        `--NotebookApp.allow_origin=${ALLOWED_ORIGIN}`,
-        `--NotebookApp.token=${token}`,
+        `--NotebookApp.allow_origin_pat="${ALLOWED_ORIGIN.source}"`,
+        `--NotebookApp.token="${token}"`,
       ]);
 
       const messageHandler = (message: string) => {
